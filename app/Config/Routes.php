@@ -33,6 +33,44 @@ $routes->get('/', 'Home::index');
 
 /*
  * --------------------------------------------------------------------
+ * CRUD RESTful Routes
+ * --------------------------------------------------------------------
+ */
+
+ //Usuario
+ $routes->get('usuario', 'Usuario::getIndex');
+ $routes->post('usuario', 'Usuario::postCreate');
+ $routes->put('usuario', 'Usuario::putUpdate');
+ $routes->options('usuario', 'Usuario::optionsIndex');
+ $routes->get('usuario/delete/(:num)', 'Usuario::deleteDelete/$1');
+ $routes->options('usuario/delete/(:num)', 'Usuario::optionsIndex');
+
+ //Producto
+ $routes->get('producto', 'Producto::getIndex');
+ $routes->post('producto', 'Producto::postCreate');
+ $routes->put('producto', 'Producto::putUpdate');
+ $routes->options('producto', 'Producto::optionsIndex');
+ $routes->get('producto/delete/(:num)', 'Producto::deleteDelete/$1');
+ $routes->options('producto/delete/(:num)', 'Producto::optionsIndex');
+
+ //Compra
+ $routes->get('compra', 'Compra::getIndex');
+ $routes->post('compra', 'Compra::postCreate');
+ $routes->put('compra', 'Compra::putUpdate');
+ $routes->options('compra', 'Compra::optionsIndex');
+ $routes->get('compra/delete/(:num)', 'Compra::deleteDelete/$1');
+ $routes->options('compra/delete/(:num)', 'Compra::optionsIndex');
+
+ //Venta
+ $routes->get('venta', 'Venta::getIndex');
+ $routes->post('venta', 'Venta::postCreate');
+ $routes->put('venta', 'Venta::putUpdate');
+ $routes->options('venta', 'Venta::optionsIndex');
+ $routes->get('venta/delete/(:num)', 'Venta::deleteDelete/$1');
+ $routes->options('venta/delete/(:num)', 'Venta::optionsIndex');
+
+/*
+ * --------------------------------------------------------------------
  * Additional Routing
  * --------------------------------------------------------------------
  *
