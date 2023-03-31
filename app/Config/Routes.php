@@ -69,6 +69,22 @@ $routes->get('/', 'Home::index');
  $routes->get('venta/delete/(:num)', 'Venta::deleteDelete/$1');
  $routes->options('venta/delete/(:num)', 'Venta::optionsIndex');
 
+ //CompraProducto
+ $routes->get('compra_producto', 'CompraProducto::getIndex');
+ $routes->post('compra_producto', 'CompraProducto::postCreate');
+ $routes->put('compra_producto', 'CompraProducto::putUpdate');
+ $routes->options('compra_producto', 'CompraProducto::optionsIndex');
+ $routes->get('compra_producto/delete/(:num)', 'CompraProducto::deleteDelete/$1');
+ $routes->options('compra_producto/delete/(:num)', 'CompraProducto::optionsIndex'); 
+
+ //VentaProducto
+ $routes->get('venta_producto', 'VentaProducto::getIndex');
+ $routes->post('venta_producto', 'VentaProducto::postCreate');
+ $routes->put('venta_producto', 'VentaProducto::putUpdate');
+ $routes->options('venta_producto', 'VentaProducto::optionsIndex');
+ $routes->get('venta_producto/delete/(:num)', 'VentaProducto::deleteDelete/$1');
+ $routes->options('venta_producto/delete/(:num)', 'VentaProducto::optionsIndex');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
