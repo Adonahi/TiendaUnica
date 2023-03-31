@@ -52,6 +52,8 @@ $routes->get('/', 'Home::index');
  $routes->options('producto', 'Producto::optionsIndex');
  $routes->get('producto/delete/(:num)', 'Producto::deleteDelete/$1');
  $routes->options('producto/delete/(:num)', 'Producto::optionsIndex');
+ $routes->get('producto/(:num)', 'Producto::getPorId/$1');
+ $routes->options('producto/(:num)', 'Producto::optionsIndex');
 
  //Compra
  $routes->get('compra', 'Compra::getIndex');
