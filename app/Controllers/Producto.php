@@ -28,7 +28,7 @@ class Producto extends ResourceController
     public function getIndex()
     {        
         $model = new ProductoModel();
-        $data = $model->findAll();
+        $data = $model->orderBy('nombre', 'asc')->findAll();
         if($data){
             return $this->respond($data, 200);
         }
@@ -97,7 +97,8 @@ class Producto extends ResourceController
 
         $rules = [
             'producto_id' => 'required',
-            'nombre' => 'required',
+            'nombre' => 'required|is_unique[producto.nombre,producto_id,' . $data['producto_id'] . ']',
+            'codigo_barras' => 'is_unique[producto.codigo_barras,producto_id,' . $data['producto_id'] . ']',
             'precio_compra' => 'required',
             'precio_venta' => 'required',
             'usuario_fk' => 'required'
