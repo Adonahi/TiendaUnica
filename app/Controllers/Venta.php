@@ -53,7 +53,8 @@ class Venta extends ResourceController
     public function postCreate(){
         $model = new VentaModel();
         $data = [
-            'precio_total' => $this->request->getVar('precio_total')
+            'precio_total' => $this->request->getVar('precio_total'),
+            'fecha' => date('r')
         ];
 
         $rules = [
@@ -62,7 +63,7 @@ class Venta extends ResourceController
 
         if($this->validate($rules)) {
             if($model->insert($data)){
-                return $this->respondCreated($data);
+                return $this->respondCreated($model->getInsertId());
             }else{
                 return $this->fail("Error en la petición", 400);
             }

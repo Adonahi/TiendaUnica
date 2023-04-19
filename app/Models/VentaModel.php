@@ -7,5 +7,5 @@ use CodeIgniter\Model;
 class VentaModel extends Model {
     protected $table = 'venta';
     protected $primaryKey = 'venta_id';    
-    protected $allowedFields = [ 'precio_total']; 
+    protected $allowedFields = [ 'precio_total', 'fecha' ]; 
 } 
