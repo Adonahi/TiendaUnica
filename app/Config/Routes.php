@@ -44,6 +44,10 @@ $routes->get('/', 'Home::index');
  $routes->options('usuario', 'Usuario::optionsIndex');
  $routes->get('usuario/delete/(:num)', 'Usuario::deleteDelete/$1');
  $routes->options('usuario/delete/(:num)', 'Usuario::optionsIndex');
+ $routes->post('login', 'Usuario::postLogin');
+ $routes->options('login', 'Usuario::optionsIndex');
+ $routes->post('logout', 'Usuario::postLogout');
+ $routes->options('logout', 'Usuario::optionsIndex');
 
  //Producto
  $routes->get('producto', 'Producto::getIndex');
@@ -54,6 +58,8 @@ $routes->get('/', 'Home::index');
  $routes->options('producto/delete/(:num)', 'Producto::optionsIndex');
  $routes->get('producto/(:num)', 'Producto::getPorId/$1');
  $routes->options('producto/(:num)', 'Producto::optionsIndex');
+ $routes->get('producto/getPorUsuario/(:num)', 'Producto::getPorUsuario/$1');
+ $routes->options('producto/getPorUsuario/(:num)', 'Producto::optionsIndex');
 
  //Compra
  $routes->get('compra', 'Compra::getIndex');
@@ -62,6 +68,8 @@ $routes->get('/', 'Home::index');
  $routes->options('compra', 'Compra::optionsIndex');
  $routes->get('compra/delete/(:num)', 'Compra::deleteDelete/$1');
  $routes->options('compra/delete/(:num)', 'Compra::optionsIndex');
+ $routes->get('compra/(:num)', 'Compra::getPorId/$1');
+ $routes->options('compra/(:num)', 'Compra::optionsIndex');
 
  //Venta
  $routes->get('venta', 'Venta::getIndex');
@@ -70,6 +78,8 @@ $routes->get('/', 'Home::index');
  $routes->options('venta', 'Venta::optionsIndex');
  $routes->get('venta/delete/(:num)', 'Venta::deleteDelete/$1');
  $routes->options('venta/delete/(:num)', 'Venta::optionsIndex');
+ $routes->get('venta/(:num)', 'Venta::getPorId/$1');
+ $routes->options('venta/(:num)', 'Venta::optionsIndex');
 
  //CompraProducto
  $routes->get('compra_producto', 'CompraProducto::getIndex');
@@ -78,6 +88,8 @@ $routes->get('/', 'Home::index');
  $routes->options('compra_producto', 'CompraProducto::optionsIndex');
  $routes->get('compra_producto/delete/(:num)', 'CompraProducto::deleteDelete/$1');
  $routes->options('compra_producto/delete/(:num)', 'CompraProducto::optionsIndex'); 
+ $routes->get('compra_producto/getPorUsuario/(:num)', 'CompraProducto::getPorUsuario/$1');
+ $routes->options('compra_producto/getPorUsuario/(:num)', 'CompraProducto::optionsIndex');
 
  //VentaProducto
  $routes->get('venta_producto', 'VentaProducto::getIndex');
@@ -86,6 +98,8 @@ $routes->get('/', 'Home::index');
  $routes->options('venta_producto', 'VentaProducto::optionsIndex');
  $routes->get('venta_producto/delete/(:num)', 'VentaProducto::deleteDelete/$1');
  $routes->options('venta_producto/delete/(:num)', 'VentaProducto::optionsIndex');
+ $routes->get('venta_producto/getPorUsuario/(:num)', 'VentaProducto::getPorUsuario/$1');
+ $routes->options('venta_producto/getPorUsuario/(:num)', 'VentaProducto::optionsIndex');
 
 /*
  * --------------------------------------------------------------------

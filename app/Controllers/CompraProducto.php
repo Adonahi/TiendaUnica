@@ -124,4 +124,24 @@ class CompraProducto extends ResourceController
             return $this->failNotFound("No encontrado");
         }
     }
+
+    //Obtener productos vendidos por usuario
+    public function getPorUsuario($usuario_id = null){
+        
+        $db = \Config\Database::connect();
+        
+        $sql = 
+        "select c.compra_id, c.fecha, p.nombre, p.precio_venta, cp.cantidad, cp.precio from compra_producto cp
+        join compra c on c.compra_id = cp.compra_fk
+        join producto p on p.producto_id = cp.producto_fk
+        where p.usuario_fk = $usuario_id";
+        
+        $data = $db->query($sql)->getResult();
+        if($data){
+            return $this->respond($data, 200);
+        }
+        else{
+            return $this->failNotFound('No Data Found with id ' . $usuario_id);
+        }
+    }
 }

@@ -28,7 +28,7 @@ class Producto extends ResourceController
     public function getIndex()
     {        
         $model = new ProductoModel();
-        $data = $model->orderBy('nombre', 'asc')->findAll();
+        $data = $model->orderBy('nombre', 'asc')->getWhere(['estatus' => 1])->getResult();
         if($data){
             return $this->respond($data, 200);
         }
@@ -46,6 +46,18 @@ class Producto extends ResourceController
         }
         else{
             return $this->failNotFound('No Data Found with id ' . $id);
+        }
+    }
+
+    //Obtener producto por usuario
+    public function getPorUsuario($usuario_id = null){
+        $model = new ProductoModel();
+        $data = $model->getWhere(['usuario_fk' => $usuario_id, 'estatus' => 1])->getResult();
+        if($data){
+            return $this->respond($data, 200);
+        }
+        else{
+            return $this->failNotFound('No Data Found with id ' . $usuario_id);
         }
     }
 
@@ -122,7 +134,7 @@ class Producto extends ResourceController
     public function deleteDelete($id = null){
         $model = new ProductoModel();
         if($id){
-            if($model->delete($id)){
+            if($model->update($id, ['estatus' => 0])){
                 return $this->respondDeleted($id);
             }
             else{

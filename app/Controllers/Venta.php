@@ -39,13 +39,20 @@ class Venta extends ResourceController
 
     //Obtener venta por id
     public function getPorId($id = null){
-        $model = new VentaModel();
-        $data = $model->getWhere(['venta_id' => $id])->getResult();
+        $db = \Config\Database::connect();
+        
+        $sql = 
+        "select v.venta_id, v.fecha, p.nombre, p.precio_venta, vp.cantidad, vp.precio, v.precio_total from venta v
+        join venta_producto vp on vp.venta_fk = v.venta_id
+        join producto p on p.producto_id = vp.producto_fk
+        where v.venta_id = $id";
+        
+        $data = $db->query($sql)->getResult();
         if($data){
             return $this->respond($data, 200);
         }
         else{
-            return $this->failNotFound('No Data Found with id ' . $id);
+            return $this->failNotFound('No Data Found with id ' . $usuario_id);
         }
     }
 

@@ -39,13 +39,20 @@ class Compra extends ResourceController
 
     //Obtener compra por id
     public function getPorId($id = null){
-        $model = new CompraModel();
-        $data = $model->getWhere(['compra_id' => $id])->getResult();
+        $db = \Config\Database::connect();
+        
+        $sql = 
+        "select c.compra_id, c.fecha, p.nombre, p.precio_compra, vc.cantidad, vc.precio, c.precio_total from compra c
+        join compra_producto vc on vc.compra_fk = c.compra_id
+        join producto p on p.producto_id = vc.producto_fk
+        where c.compra_id = $id";
+        
+        $data = $db->query($sql)->getResult();
         if($data){
             return $this->respond($data, 200);
         }
         else{
-            return $this->failNotFound('No Data Found with id ' . $id);
+            return $this->failNotFound('No Data Found with id ' . $usuario_id);
         }
     }
 

@@ -5,12 +5,16 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\UsuarioModel;
+use Config\Services;
+use \Firebase\JWT\JWT;
+use \Datetime;
 
 class Usuario extends ResourceController
 {    
     use ResponseTrait;
     protected $modelName = 'App\Models\UsuarioModel';
     protected $format    = 'json';
+    private $alg = 'HS256';
     
     public function __construct()
     {
@@ -54,7 +58,6 @@ class Usuario extends ResourceController
         $model = new UsuarioModel();
         $data = [
             'nombre' => $this->request->getVar('nombre'),
-            'login' => $this->request->getVar('login'),
             'correo' => $this->request->getVar('correo'),
             'contrasenha' => $this->request->getVar('contrasenha'),
             'permiso' => $this->request->getVar('permiso')
@@ -62,7 +65,6 @@ class Usuario extends ResourceController
 
         $rules = [
             'nombre' => 'required',
-            'login' => 'required|is_unique[usuario.login]',
             'correo' => 'required|is_unique[usuario.correo]',
             'contrasenha' => 'required',
             'permiso' => 'required'
@@ -131,6 +133,95 @@ class Usuario extends ResourceController
         }
         else{
             return $this->failNotFound("No encontrado");
+        }
+    }
+
+    public function postLogout()
+    {
+        $db = \Config\Database::connect();
+        $model = new UsuarioModel();
+        $data = [
+            'usuario_id' => $this->request->getVar('usuario_id')
+        ];
+
+        $rules = [
+            'usuario_id' => 'required'
+        ];
+
+        if ($this->validate($rules)) {
+            $sql = 'update usuario set login=\'\' where usuario_id= ' . $data['usuario_id'] . ';';
+            $data = $db->query($sql);
+            return $this->respond($data);
+        } else {
+            return $this->failValidationErrors($this->validator->getErrors());
+        }
+    }
+
+    public function postLogin()
+    {
+        $db = \Config\Database::connect();
+        $model = new UsuarioModel();
+        $data = [
+            'password' => $this->request->getVar('password'),
+            'correo' => $this->request->getVar('correo')
+        ];
+
+        $rules = [
+            'password' => 'required',
+            'correo' => 'required'
+        ];
+        if ($this->validate($rules)) {
+            $sql = 'select * from usuario where correo = \'' . $data['correo'] . '\';';
+            $query = $db->query($sql);
+
+            if (count($query->getResult()) > 0) {
+                $usuario_id = $query->getResult()[0]->usuario_id;
+                $row = $query->getResult()[0];
+
+                if (password_verify($data['password'], $row->contrasenha)) {
+                    $sql = 'select login from usuario where usuario_id= ' . $usuario_id . ';';
+                    $tmstmpLogin = $db->query($sql);
+                    $tmstmpAntiguo = $tmstmpLogin->getResult()[0]->login;
+                    $horaLimite = date('Y-m-d H:i:s', strtotime('+1 hour +3 minutes', strtotime($tmstmpAntiguo)));
+                    if (date('Y-m-d H:i:s') <= $horaLimite) {
+                        return $this->failValidationErrors("Este usuario tiene una sesión abierta en otro dispositivo");
+                    } else {
+                        $issuedat_claim = time();
+                        $expire_claim = $issuedat_claim + 3600;
+                        $token = array(
+                            'iat' => $issuedat_claim,
+                            'exp' => $expire_claim,
+                            'data' => array(
+                                'login' => $row->login,
+                                'correo' => $row->correo,
+                                'nombre' => $row->nombre,
+                                'permiso' => $row->permiso,
+                                'usuario_id' => $row->usuario_id
+                            )
+                        );
+
+                        $key = Services::getKey();
+                        $jwtValue = JWT::encode($token, $key, $this->alg);
+                        $tmstmp = new DateTime();
+                        $sql = 'update usuario set login=\'' . $tmstmp->format('Y-m-d H:i:s') . '\' where usuario_id= ' . $usuario_id . ';';
+                        $db->query($sql);
+                        $query = $db->query($sql);
+
+                        return json_encode(
+                            array(
+                                "status" => "success",
+                                "token" => $jwtValue,
+                            )
+                        );
+                    }
+                } else {
+                    return $this->failValidationErrors("La contraseña es incorrecta");
+                }
+            } else {
+                return $this->failValidationErrors("El correo introducido no está asociado con alguna cuenta");
+            }
+        } else {
+            return $this->failValidationErrors($this->validator->getErrors());
         }
     }
 }
