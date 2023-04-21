@@ -131,10 +131,11 @@ class CompraProducto extends ResourceController
         $db = \Config\Database::connect();
         
         $sql = 
-        "select c.compra_id, c.fecha, p.nombre, p.precio_venta, cp.cantidad, cp.precio from compra_producto cp
+        "select c.compra_id, c.fecha, p.nombre, p.precio_compra, cp.cantidad, cp.precio from compra_producto cp
         join compra c on c.compra_id = cp.compra_fk
         join producto p on p.producto_id = cp.producto_fk
-        where p.usuario_fk = $usuario_id";
+        where p.usuario_fk = $usuario_id
+        order by c.fecha desc";
         
         $data = $db->query($sql)->getResult();
         if($data){

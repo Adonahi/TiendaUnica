@@ -134,7 +134,8 @@ class VentaProducto extends ResourceController
         "select v.venta_id, v.fecha, p.nombre, p.precio_venta, vp.cantidad, vp.precio from venta_producto vp
         join venta v on v.venta_id = vp.venta_fk
         join producto p on p.producto_id = vp.producto_fk
-        where p.usuario_fk = $usuario_id";
+        where p.usuario_fk = $usuario_id
+        order by v.fecha desc";
         
         $data = $db->query($sql)->getResult();
         if($data){

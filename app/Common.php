@@ -13,3 +13,5 @@
  *
  * @see: https://codeigniter.com/user_guide/extending/common.html
  */
+
+ date_default_timezone_set('America/Mexico_City');
