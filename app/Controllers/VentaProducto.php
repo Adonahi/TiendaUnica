@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\VentaProductoModel;
+use App\Models\ProductoModel;
 
 class VentaProducto extends ResourceController
 {    
@@ -52,9 +53,11 @@ class VentaProducto extends ResourceController
     //Crear un venta_producto
     public function postCreate(){
         $model = new VentaProductoModel();
+        $mProducto = new ProductoModel();
         $data = [
             'venta_fk' => $this->request->getVar('venta_fk'),
             'producto_fk' => $this->request->getVar('producto_fk'),
+            'existencia' => $this->request->getVar('existencia'),
             'cantidad' => $this->request->getVar('cantidad'),
             'precio' => $this->request->getVar('precio'),
         ];
@@ -68,7 +71,12 @@ class VentaProducto extends ResourceController
 
         if($this->validate($rules)) {
             if($model->insert($data)){
-                return $this->respondCreated($data);
+                if($mProducto->update($data['producto_fk'], ['existencia' => $data['existencia'] - $data['cantidad']])){
+                    return $this->respondCreated($data);
+                }
+                else{
+                    return $this->fail("Error en la petición", 400);    
+                }
             }else{
                 return $this->fail("Error en la petición", 400);
             }

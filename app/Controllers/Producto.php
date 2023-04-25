@@ -52,7 +52,7 @@ class Producto extends ResourceController
     //Obtener producto por usuario
     public function getPorUsuario($usuario_id = null){
         $model = new ProductoModel();
-        $data = $model->getWhere(['usuario_fk' => $usuario_id, 'estatus' => 1])->getResult();
+        $data = $model->orderBy('nombre', 'asc')->getWhere(['usuario_fk' => $usuario_id, 'estatus' => 1])->getResult();
         if($data){
             return $this->respond($data, 200);
         }
@@ -65,7 +65,6 @@ class Producto extends ResourceController
     public function postCreate(){
         $model = new ProductoModel();
         $data = [
-            'cantidad' => $this->request->getVar('cantidad'),
             //Mandar el nombre a lowercase desde el Frontend
             'nombre' => $this->request->getVar('nombre'),
             'codigo_barras' => $this->request->getVar('codigo_barras'),
