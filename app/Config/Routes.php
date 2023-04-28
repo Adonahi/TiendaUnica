@@ -100,6 +100,8 @@ $routes->get('/', 'Home::index');
  $routes->options('venta_producto/delete/(:num)', 'VentaProducto::optionsIndex');
  $routes->get('venta_producto/getPorUsuario/(:num)', 'VentaProducto::getPorUsuario/$1');
  $routes->options('venta_producto/getPorUsuario/(:num)', 'VentaProducto::optionsIndex');
+ $routes->get('venta_producto/getPorUsuarioPorProducto/(:num)', 'VentaProducto::getPorUsuarioPorProducto/$1');
+ $routes->options('venta_producto/getPorUsuarioPorProducto/(:num)', 'VentaProducto::optionsIndex');
 
 /*
  * --------------------------------------------------------------------
