@@ -89,7 +89,6 @@ class Usuario extends ResourceController
         $data = [
             'usuario_id' => $this->request->getVar('usuario_id'),
             'nombre' => $this->request->getVar('nombre'),
-            'login' => $this->request->getVar('login'),
             'correo' => $this->request->getVar('correo'),
             'contrasenha' => $this->request->getVar('contrasenha'),
             'permiso' => $this->request->getVar('permiso')
@@ -98,7 +97,6 @@ class Usuario extends ResourceController
         $rules = [
             'usuario_id' => 'required',
             'nombre' => 'required',
-            'login' => 'required',
             'correo' => 'required',
             'contrasenha' => 'required',
             'permiso' => 'required'
@@ -182,7 +180,7 @@ class Usuario extends ResourceController
                     $sql = 'select login from usuario where usuario_id= ' . $usuario_id . ';';
                     $tmstmpLogin = $db->query($sql);
                     $tmstmpAntiguo = $tmstmpLogin->getResult()[0]->login;
-                    $horaLimite = date('Y-m-d H:i:s', strtotime('+1 hour +3 minutes', strtotime($tmstmpAntiguo)));
+                    $horaLimite = date('Y-m-d H:i:s', strtotime('+10 minutes', strtotime($tmstmpAntiguo)));
                     if (date('Y-m-d H:i:s') <= $horaLimite) {
                         return $this->failValidationErrors("Este usuario tiene una sesión abierta en otro dispositivo");
                     } else {

@@ -75,7 +75,7 @@ class Producto extends ResourceController
 
         $rules = [
             'nombre' => 'required|is_unique[producto.nombre]',
-            'codigo_barras' => 'is_unique[producto.codigo_barras]',
+            //'codigo_barras' => 'is_unique[producto.codigo_barras]',
             'precio_compra' => 'required',
             'precio_venta' => 'required',
             'usuario_fk' => 'required'
@@ -109,7 +109,7 @@ class Producto extends ResourceController
         $rules = [
             'producto_id' => 'required',
             'nombre' => 'required|is_unique[producto.nombre,producto_id,' . $data['producto_id'] . ']',
-            'codigo_barras' => 'is_unique[producto.codigo_barras,producto_id,' . $data['producto_id'] . ']',
+            //'codigo_barras' => 'is_unique[producto.codigo_barras,producto_id,' . $data['producto_id'] . ']',
             'precio_compra' => 'required',
             'precio_venta' => 'required',
             'usuario_fk' => 'required'
