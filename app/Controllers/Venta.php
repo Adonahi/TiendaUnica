@@ -33,7 +33,7 @@ class Venta extends ResourceController
             return $this->respond($data, 200);
         }
         else{
-            return $this->failNotFound('No Data Found');
+            return $this->respond([]);
         }
     }
 
@@ -52,7 +52,7 @@ class Venta extends ResourceController
             return $this->respond($data, 200);
         }
         else{
-            return $this->failNotFound('No Data Found with id ' . $usuario_id);
+            return $this->respond([]);
         }
     }
 
